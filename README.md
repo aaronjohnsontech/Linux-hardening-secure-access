@@ -2,53 +2,91 @@
 
 ## Executive Summary
 
-This project implements a secure Linux remote-access baseline using a default-deny firewall policy, SSH key-based authentication, restricted administrative access, firewall logging, validation checks, and rollback procedures.
+This project implements a secure Linux remote-administration baseline using **UFW default-deny firewall rules**, **SSH key-only authentication**, **restricted access from a trusted administrative host**, **service validation**, and **documented rollback procedures**.
 
-The goal is to demonstrate a practical security-operations workflow: define the risk, implement controls, validate that access still works as intended, and document a safe recovery path before changes become operationally risky.
+The objective was not just to harden a host. It was to demonstrate a full operational workflow: identify the exposure, apply the controls, verify that legitimate administration still works, and leave behind recovery steps another analyst or administrator could follow safely.
 
-> **Recruiter takeaway:** This project shows secure configuration, least privilege, change discipline, validation, and recovery planning — all directly relevant to SOC, IT Security, Endpoint Security, and Detection-focused roles.
+> **Recruiter takeaway:** This project demonstrates least privilege, secure remote administration, Linux hardening, change discipline, validation, and recovery planning — all directly relevant to SOC, IT Security, Endpoint Security, and Detection-focused roles.
+
+## Project Links
+
+- **Portfolio case study:** https://aaronjohnson.tech/linux-hardening-secure-access.html
+- **Portfolio homepage:** https://aaronjohnson.tech
+- **GitHub repository:** https://github.com/aaronjohnsontech/linux-hardening-secure-access
 
 ## Problem
 
-Linux systems often expose SSH for remote administration. If SSH is left open broadly or allows password-based login, it increases the risk of brute-force attempts, credential stuffing, unauthorized access, and operational disruption. Security teams need a repeatable way to reduce remote-access risk without locking themselves out.
+Linux systems commonly expose SSH for remote administration. If SSH is left broadly reachable or still allows password-based authentication, it increases the risk of brute-force activity, credential stuffing, unauthorized access, and operational disruption.
 
-## Objectives
+This project addresses that risk by moving the host to a more defensible baseline:
 
-- Establish a default-deny inbound firewall baseline.
-- Allow SSH only from a trusted administrative source.
-- Enable firewall logging for visibility into denied traffic.
-- Move SSH toward key-only authentication.
-- Disable root login and password-based authentication.
-- Validate that authorized access still works.
-- Document rollback procedures for safe recovery.
+- deny inbound traffic by default
+- allow only the required administrative path
+- restrict SSH to a trusted source
+- move authentication to SSH keys
+- disable password-based login and root login
+- document rollback steps before considering the change complete
 
 ## Environment
 
 | Component | Role |
 |---|---|
-| Ubuntu Linux host | System being hardened |
-| Kali Linux host | Trusted administrative/test host |
+| Ubuntu / Wazuh Manager host (`192.168.0.250`) | System being hardened |
+| Kali Linux host (`192.168.0.93`) | Trusted administrative / test host |
 | UFW | Host firewall control |
 | OpenSSH Server | Remote administration service |
 | ED25519 SSH key | Key-based authentication |
-| System logs / UFW logs | Validation and troubleshooting evidence |
+| `systemctl`, SSH client, firewall status output | Validation evidence |
 
-All IP addresses and usernames in this public repo are sanitized. Replace placeholders such as `<ADMIN_IP>` and `<USERNAME>` with values from your authorized lab or enterprise environment.
+## Control Outcomes
+
+- **Default-deny inbound policy** established with outbound traffic allowed.
+- **SSH limited to one trusted source IP** instead of broad network exposure.
+- **ED25519 key pair generated** and public key installed on the target host.
+- **PasswordAuthentication set to `no`**, **PubkeyAuthentication kept at `yes`**, and **PermitRootLogin set to `no`**.
+- **SSH service validated** after configuration changes.
+- **Rollback path documented** for both UFW and SSH configuration changes.
 
 ## Implementation Overview
 
-1. Install and reset UFW to a known state.
-2. Set default inbound traffic to deny and outbound traffic to allow.
-3. Permit SSH only from a trusted administrative host.
-4. Enable UFW logging and verify firewall status.
-5. Generate an ED25519 SSH key pair.
-6. Copy the public key to the Linux host.
-7. Backup the SSH daemon configuration.
-8. Disable password authentication, challenge-response authentication, and root login.
-9. Restart SSH and validate key-based access.
-10. Maintain a rollback plan for firewall and SSH configuration recovery.
+1. Validate or install UFW, then reset it to a known state.
+2. Apply **default deny incoming** and **default allow outgoing** policies.
+3. Allow TCP/22 only from the trusted Kali administrative host.
+4. Enable UFW logging and verify the final rule state.
+5. Generate an ED25519 key pair on the administrative host.
+6. Use `ssh-copy-id` to install the public key on the Ubuntu host.
+7. Back up `sshd_config` and harden SSH by disabling password login and root login.
+8. Restart SSH and confirm that the service is healthy.
+9. Validate passwordless administrative access from the trusted host.
+10. Document rollback steps to remove the SSH rule, reset or disable UFW, and recover SSH configuration if necessary.
 
-## Project Structure
+## Evidence Highlights
+
+### Topology
+
+![Lab topology](evidence/screenshots/linux-hardening-topology.svg)
+
+### Firewall Baseline
+
+![Firewall baseline sequence](evidence/screenshots/firewall-baseline-sequence.webp)
+
+### SSH Key Generation and Deployment
+
+| Key generation | Public key installation |
+|---|---|
+| ![SSH keygen](evidence/screenshots/ssh-keygen.webp) | ![ssh-copy-id](evidence/screenshots/ssh-copy-id.webp) |
+
+### SSH Hardening and Validation
+
+| SSH config hardening | SSH service validation | Passwordless login validation |
+|---|---|---|
+| ![sshd_config hardening](evidence/screenshots/sshd-config-hardening.webp) | ![SSH service status](evidence/screenshots/ssh-service-status.webp) | ![Passwordless login](evidence/screenshots/passwordless-login.webp) |
+
+### Rollback & Recovery
+
+![Rollback sequence](evidence/screenshots/rollback-sequence.webp)
+
+## Repository Structure
 
 ```text
 linux-hardening-secure-access/
@@ -59,7 +97,8 @@ linux-hardening-secure-access/
 │   ├── validation-checklist.md
 │   ├── rollback-plan.md
 │   ├── security-rationale.md
-│   └── interview-talking-points.md
+│   ├── interview-talking-points.md
+│   └── publishing-checklist.md
 ├── configs/
 │   ├── sshd_config_hardening_example.conf
 │   └── ufw-baseline-commands.md
@@ -69,10 +108,8 @@ linux-hardening-secure-access/
 ├── evidence/
 │   ├── diagrams/
 │   │   └── linux-hardening-architecture.svg
-│   └── redacted-notes/
-│       ├── ufw-default-deny.md
-│       ├── ssh-key-only-hardening.md
-│       └── backout-recovery.md
+│   ├── redacted-notes/
+│   └── screenshots/
 └── website/
     ├── linux-hardening-case-study.html
     └── project-card-snippet.html
@@ -92,5 +129,4 @@ linux-hardening-secure-access/
 
 ## Safety Notice
 
-Do not run hardening commands on a system you cannot recover through console access, snapshot restore, or out-of-band management. Review the rollback plan before applying firewall or SSH changes.
-
+Do not apply firewall or SSH hardening changes on a system you cannot recover through console access, snapshot restore, or out-of-band management. Review the rollback plan before making remote-access changes.

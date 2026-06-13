@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420">
+<style>
+  .bg{fill:#020617}.panel{fill:#0f172a;stroke:#334155;stroke-width:2}.line{stroke:#60a5fa;stroke-width:4}.dashed{stroke:#64748b;stroke-width:3;stroke-dasharray:10 8}.title{font:700 18px DejaVu Sans, Arial; fill:#f8fafc}.text{font:400 15px DejaVu Sans, Arial; fill:#cbd5e1}.muted{font:400 13px DejaVu Sans, Arial; fill:#94a3b8}.tag{fill:#1d4ed8}.tagtext{font:700 12px DejaVu Sans, Arial; fill:#fff}
+</style>
+<rect class="bg" width="1200" height="420" rx="28"/>
+<text x="60" y="56" class="title">Linux Hardening &amp; Secure Access Control — Lab Topology</text>
+<text x="60" y="84" class="muted">Administrative access is restricted to a trusted Kali host. The Ubuntu system uses UFW default-deny inbound rules and SSH key-only authentication.</text>
+<rect x="80" y="150" width="300" height="170" rx="22" class="panel"/>
+<text x="110" y="190" class="title">Kali Linux Admin Host</text>
+<text x="110" y="220" class="text">Role: trusted administrative workstation</text>
+<text x="110" y="248" class="text">Actions: ssh-keygen, ssh-copy-id, SSH validation</text>
+<rect x="110" y="270" width="130" height="30" rx="15" class="tag"/><text x="132" y="290" class="tagtext">192.168.0.93</text>
+<rect x="460" y="150" width="300" height="170" rx="22" class="panel"/>
+<text x="490" y="190" class="title">Ubuntu / Wazuh Manager Host</text>
+<text x="490" y="220" class="text">Role: system being hardened</text>
+<text x="490" y="248" class="text">Controls: UFW, OpenSSH, ED25519 key auth</text>
+<rect x="490" y="270" width="140" height="30" rx="15" class="tag"/><text x="514" y="290" class="tagtext">192.168.0.250</text>
+<rect x="840" y="150" width="280" height="170" rx="22" class="panel"/>
+<text x="870" y="190" class="title">Security Outcomes</text>
+<text x="870" y="220" class="text">• Default-deny inbound</text>
+<text x="870" y="248" class="text">• SSH only from trusted IP</text>
+<text x="870" y="276" class="text">• PasswordAuthentication no</text>
+<text x="870" y="304" class="text">• PermitRootLogin no</text>
+<line x1="380" y1="235" x2="460" y2="235" class="line"/>
+<polygon points="460,235 443,226 443,244" fill="#60a5fa"/>
+<text x="388" y="220" class="muted">SSH / tcp/22</text>
+<line x1="760" y1="235" x2="840" y2="235" class="dashed"/>
+<polygon points="840,235 823,226 823,244" fill="#64748b"/>
+<text x="767" y="220" class="muted">Validated controls</text>
+</svg>

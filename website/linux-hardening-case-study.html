@@ -1,77 +1,192 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Linux Hardening & Secure Access Control | Aaron Johnson</title>
-  <meta name="description" content="Linux hardening case study focused on UFW default-deny firewall rules, SSH key-only authentication, restricted access, validation, and rollback planning.">
-</head>
-<body>
-  <main>
-    <p>Security Operations · Linux Hardening · Secure Access Control</p>
-    <h1>Linux Hardening &amp; Secure Access Control</h1>
-    <p>
-      This project implemented a secure Linux remote-access baseline using UFW default-deny firewall rules,
-      SSH key-based authentication, restricted administrative access, firewall logging, validation checks,
-      and documented rollback procedures.
-    </p>
+  <head>
+    <title>Linux Hardening & Secure Access Control — Aaron Johnson</title>
+    <meta name="description" content="Linux hardening case study by Aaron Johnson covering UFW default-deny rules, SSH key-only authentication, restricted administrative access, logging, validation, and back-out recovery planning." />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Aaron Johnson" />
+    <meta property="og:title" content="Linux Hardening & Secure Access Control — Aaron Johnson" />
+    <meta property="og:description" content="Linux hardening case study by Aaron Johnson covering UFW default-deny rules, SSH key-only authentication, restricted administrative access, logging, validation, and back-out recovery planning." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://aaronjohnson.tech/linux-hardening-secure-access.html" />
+    <meta property="og:image" content="https://aaronjohnson.tech/aj.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "aj-bg": "#020617",
+              "aj-panel": "rgba(15,23,42,0.96)",
+              "aj-ink": "#E5E7EB",
+              "aj-ink-soft": "#9CA3AF",
+              "aj-accent": "#2563EB",
+            },
+            boxShadow: { "2xl-dark": "0 24px 60px rgba(15,23,42,0.9)" },
+          },
+        },
+      };
+    </script>
+    <link rel="icon" href="Icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="bg-aj-bg text-aj-ink antialiased">
+    <main class="min-h-screen">
+      <div class="lab-page px-4 sm:px-6 lg:px-0 py-6 sm:py-10 md:py-12">
+        <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10">
+          <a class="flex items-center gap-4 hover:no-underline" href="index.html" aria-label="Home — Aaron Johnson">
+            <img class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-slate-950 shadow-lg flex-shrink-0 border border-slate-700 object-contain p-1.5" src="Icon.svg" alt="Aaron Johnson icon" />
+            <img class="h-14 sm:h-16 md:h-20" src="logo.svg" alt="Aaron Johnson Tech wordmark" />
+          </a>
+          <nav class="flex flex-wrap items-center gap-2 text-xs sm:text-sm" aria-label="Primary navigation">
+            <a href="index.html" class="rounded-full border border-slate-700 text-aj-ink-soft px-3 py-1.5 hover:bg-slate-900 hover:text-white hover:no-underline">Home</a>
+            <a href="projects.html" class="rounded-full border border-aj-accent bg-aj-accent/10 text-white px-3 py-1.5 hover:bg-slate-900 hover:text-white hover:no-underline">Projects</a>
+            <a href="about.html" class="rounded-full border border-slate-700 text-aj-ink-soft px-3 py-1.5 hover:bg-slate-900 hover:text-white hover:no-underline">About</a>
+            <a href="contact.html" class="rounded-full border border-slate-700 text-aj-ink-soft px-3 py-1.5 hover:bg-slate-900 hover:text-white hover:no-underline">Contact</a>
+            <a href="https://github.com/aaronjohnsontech/linux-hardening-secure-access" target="_blank" rel="noopener noreferrer" class="rounded-full border border-slate-700 text-aj-ink-soft px-3 py-1.5 hover:bg-slate-900 hover:text-white hover:no-underline">GitHub</a>
+            <a href="assets/Aaron-Johnson-Security-Operations-Resume.pdf" target="_blank" rel="noopener noreferrer" class="rounded-full border border-aj-accent bg-aj-accent px-3 py-1.5 text-white hover:bg-blue-600 hover:text-white hover:no-underline">Resume</a>
+          </nav>
+        </header>
 
-    <section>
-      <h2>Problem</h2>
-      <p>
-        SSH is a common administrative entry point. When it is broadly reachable or configured for password-based login,
-        it increases exposure to brute-force attempts, credential attacks, and unauthorized access. The goal was to reduce
-        remote-access risk while preserving reliable administration and recovery options.
-      </p>
-    </section>
+        <section class="rounded-[2rem] bg-gradient-to-br from-slate-900 via-slate-950 to-black border border-slate-800 shadow-2xl-dark p-6 sm:p-8 mb-8">
+          <p class="kicker mb-3">Linux hardening case study</p>
+          <h1 class="text-3xl sm:text-5xl font-black text-white mb-3 tracking-tight">Linux Hardening & Secure Access Control</h1>
+          <p class="text-sm sm:text-base text-aj-ink-soft max-w-3xl">Implemented a secure remote-administration baseline using <strong class="text-white">UFW default-deny rules</strong>, <strong class="text-white">SSH key-only authentication</strong>, access restricted to a trusted administrative host, service validation, and documented rollback procedures.</p>
+          <div class="mt-5 flex flex-wrap gap-2">
+            <span class="badge">Linux</span><span class="badge">UFW</span><span class="badge">OpenSSH</span><span class="badge">ED25519 keys</span><span class="badge">Change control</span><span class="badge">Recovery planning</span>
+          </div>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a href="https://github.com/aaronjohnsontech/linux-hardening-secure-access" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-semibold bg-aj-accent text-white hover:bg-blue-600 hover:no-underline shadow-lg shadow-blue-900/40">View GitHub repo</a>
+            <a href="#implementation" class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-medium border border-slate-600 text-aj-ink-soft hover:bg-slate-900 hover:text-white hover:no-underline">Jump to implementation</a>
+          </div>
+        </section>
 
-    <section>
-      <h2>Environment</h2>
-      <ul>
-        <li>Ubuntu Linux host</li>
-        <li>Kali Linux trusted administrative/testing host</li>
-        <li>UFW host firewall</li>
-        <li>OpenSSH Server</li>
-        <li>ED25519 SSH key pair</li>
-      </ul>
-    </section>
+        <section class="grid md:grid-cols-4 gap-4 mb-8 text-sm">
+          <div class="stat-card"><div class="font-semibold text-white">Security objective</div><p class="text-aj-ink-soft mt-1">Reduce SSH exposure while preserving safe remote administration.</p></div>
+          <div class="stat-card"><div class="font-semibold text-white">Host controls</div><p class="text-aj-ink-soft mt-1">Default-deny inbound rules, allow outbound, SSH limited to one trusted source.</p></div>
+          <div class="stat-card"><div class="font-semibold text-white">Authentication</div><p class="text-aj-ink-soft mt-1">ED25519 key-based login, password auth disabled, root login disabled.</p></div>
+          <div class="stat-card"><div class="font-semibold text-white">Operational discipline</div><p class="text-aj-ink-soft mt-1">Validation and rollback steps documented before treating the change as complete.</p></div>
+        </section>
 
-    <section>
-      <h2>Implementation</h2>
-      <p>
-        I configured a default-deny inbound firewall baseline, allowed outbound traffic, restricted SSH access to a trusted
-        administrative source, enabled firewall logging, generated an ED25519 SSH key, copied the public key to the Linux host,
-        backed up the SSH daemon configuration, disabled password authentication, disabled root login, restarted SSH, and validated
-        key-based access from a second session.
-      </p>
-    </section>
+        <section class="bg-aj-panel border border-slate-700 rounded-3xl p-6 sm:p-8 mb-8">
+          <div class="grid lg:grid-cols-[1.1fr_.9fr] gap-6 items-center">
+            <div>
+              <h2 class="text-2xl font-semibold text-white mb-3">Lab context and design</h2>
+              <p class="text-aj-ink-soft mb-4">This project hardens an Ubuntu host used for administration in a lab environment. The defensive design is simple and intentional: leave outbound traffic available, deny inbound traffic by default, allow SSH only from a trusted Kali host, then move SSH to key-only access and validate that recovery steps exist if anything breaks.</p>
+              <ul class="text-aj-ink-soft text-sm space-y-2 list-disc ml-5">
+                <li><strong class="text-white">System being hardened:</strong> Ubuntu / Wazuh Manager host at <code class="text-slate-300">192.168.0.250</code></li>
+                <li><strong class="text-white">Trusted admin host:</strong> Kali Linux at <code class="text-slate-300">192.168.0.93</code></li>
+                <li><strong class="text-white">Core services:</strong> UFW and OpenSSH</li>
+              </ul>
+            </div>
+            <figure class="lab-figure my-0 max-w-none">
+              <img src="assets/linux-hardening/linux-hardening-topology.svg" alt="Diagram showing Kali admin host connecting over SSH to the Ubuntu host, with UFW default-deny inbound policy and SSH key-only authentication." />
+              <figcaption>Simple lab topology used to validate UFW restrictions and SSH key-only administration.</figcaption>
+            </figure>
+          </div>
+        </section>
 
-    <section>
-      <h2>Validation</h2>
-      <ul>
-        <li>Verified UFW was active and enforcing the expected rule set.</li>
-        <li>Confirmed SSH was allowed only from the trusted administrative source.</li>
-        <li>Validated key-based SSH access after hardening.</li>
-        <li>Documented rollback steps for UFW and SSH recovery.</li>
-      </ul>
-    </section>
+        <section id="implementation" class="space-y-6 prose-lite text-sm sm:text-base text-aj-ink-soft">
+          <article class="bg-aj-panel border border-slate-700 rounded-3xl p-6 sm:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
+              <h2 class="text-2xl font-semibold text-white">1) Establish the firewall baseline</h2>
+              <span class="badge">UFW default-deny baseline</span>
+            </div>
+            <p>The first stage was to put the host firewall into a known state, apply a default-deny inbound policy, allow outbound traffic, permit SSH only from the trusted Kali IP, enable logging, and verify the resulting rule set.</p>
+            <figure class="lab-figure">
+              <img src="assets/linux-hardening/firewall-baseline-sequence.webp" alt="UFW implementation sequence showing package validation, firewall reset, default deny incoming, allow outgoing, SSH allow rule from the trusted host, logging enabled, firewall enabled, and final status output." />
+              <figcaption>Firewall baseline sequence: reset UFW, apply default policies, allow SSH only from the trusted administrative source, enable logging, and verify status.</figcaption>
+            </figure>
+            <div class="callout mt-4"><strong class="text-white">Security value:</strong> This reduces network exposure by allowing only the minimum remote administrative path needed for the task.</div>
+          </article>
 
-    <section>
-      <h2>Security Value</h2>
-      <p>
-        The project demonstrates least-privilege access control, secure remote administration, firewall visibility,
-        operational validation, and rollback planning. It shows the ability to harden a system while thinking about both
-        security and service continuity.
-      </p>
-    </section>
+          <article class="bg-aj-panel border border-slate-700 rounded-3xl p-6 sm:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
+              <h2 class="text-2xl font-semibold text-white">2) Move SSH to key-only access</h2>
+              <span class="badge">Key-based authentication</span>
+            </div>
+            <p>Next, I generated an ED25519 key pair on the administrative host, copied the public key to the Ubuntu host, backed up the SSH daemon configuration, and disabled password-based authentication and root login.</p>
+            <div class="grid lg:grid-cols-2 gap-5 mt-5">
+              <figure class="lab-figure my-0 max-w-none">
+                <img src="assets/linux-hardening/ssh-keygen.webp" alt="Terminal output showing generation of an ED25519 SSH key pair." />
+                <figcaption>Generate a new ED25519 key pair for administrative access.</figcaption>
+              </figure>
+              <figure class="lab-figure my-0 max-w-none">
+                <img src="assets/linux-hardening/ssh-copy-id.webp" alt="Terminal output showing ssh-copy-id installing the public key on the Ubuntu host." />
+                <figcaption>Install the public key on the Ubuntu host using <code>ssh-copy-id</code>.</figcaption>
+              </figure>
+              <figure class="lab-figure my-0 max-w-none lg:col-span-2">
+                <img src="assets/linux-hardening/sshd-config-hardening.webp" alt="Excerpt from sshd_config showing PasswordAuthentication no, ChallengeResponseAuthentication no, PubkeyAuthentication yes, and PermitRootLogin no." />
+                <figcaption>Key SSH hardening lines: disable password authentication, keep public-key authentication enabled, and disallow root login.</figcaption>
+              </figure>
+            </div>
+          </article>
 
-    <section>
-      <h2>Recruiter Takeaway</h2>
-      <p>
-        This project shows that I can apply secure configuration controls, validate them, and document recovery steps in a way
-        that supports real security operations work.
-      </p>
-    </section>
-  </main>
-</body>
+          <article class="bg-aj-panel border border-slate-700 rounded-3xl p-6 sm:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
+              <h2 class="text-2xl font-semibold text-white">3) Validate the change before calling it complete</h2>
+              <span class="badge">Operational validation</span>
+            </div>
+            <p>Security hardening is incomplete without validation. After updating the SSH daemon configuration, I restarted the service, verified that it was running normally, and confirmed passwordless login from the trusted Kali host.</p>
+            <div class="grid lg:grid-cols-2 gap-5 mt-5">
+              <figure class="lab-figure my-0 max-w-none">
+                <img src="assets/linux-hardening/ssh-service-status.webp" alt="systemctl status output showing the SSH service active and running after the configuration update." />
+                <figcaption>Service health check: SSH is active and running after the hardening change.</figcaption>
+              </figure>
+              <figure class="lab-figure my-0 max-w-none">
+                <img src="assets/linux-hardening/passwordless-login.webp" alt="Terminal output showing successful SSH login to the Ubuntu host after key-only hardening." />
+                <figcaption>Validation result: remote administration still works using key-based login.</figcaption>
+              </figure>
+            </div>
+            <ul class="mt-4">
+              <li>Firewall is active and logging is enabled.</li>
+              <li>SSH is reachable only from the approved administrative source.</li>
+              <li>Key-based login succeeds after password authentication is disabled.</li>
+            </ul>
+          </article>
+
+          <article class="bg-aj-panel border border-slate-700 rounded-3xl p-6 sm:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
+              <h2 class="text-2xl font-semibold text-white">4) Document rollback and recovery</h2>
+              <span class="badge">Back-out planning</span>
+            </div>
+            <p>A strong hardening change includes a safe way back. I documented how to review and delete the SSH firewall rule, reset or disable UFW if necessary, and restart SSH after configuration updates.</p>
+            <figure class="lab-figure">
+              <img src="assets/linux-hardening/rollback-sequence.webp" alt="Composite image showing numbered UFW status, deletion of the SSH rule, UFW reset, UFW disable, and SSH restart steps used for rollback and recovery." />
+              <figcaption>Rollback sequence: review the rule, delete it if necessary, reset or disable UFW, and restart SSH after configuration changes.</figcaption>
+            </figure>
+            <div class="callout mt-4"><strong class="text-white">Recruiter takeaway:</strong> This project is not only about hardening. It also demonstrates change discipline and the ability to leave another analyst or administrator with a recovery path.</div>
+          </article>
+
+          <article class="bg-aj-panel border border-slate-700 rounded-3xl p-6 sm:p-8">
+            <h2 class="text-2xl font-semibold text-white mb-3">Artifacts and supporting evidence</h2>
+            <p class="mb-4">The supporting artifacts below show the original project evidence, while the GitHub repository packages the same work in a cleaner recruiter- and reviewer-friendly format.</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <a class="badge hover:text-white" href="https://github.com/aaronjohnsontech/linux-hardening-secure-access" target="_blank" rel="noopener noreferrer">GitHub repository</a>
+              <a class="badge hover:text-white" href="assets/labs/Linux-Hardening-UFW-Default-Deny.pdf" target="_blank" rel="noopener noreferrer">UFW default-deny PDF</a>
+              <a class="badge hover:text-white" href="assets/labs/Linux-Hardening-SSH-Key-Only.pdf" target="_blank" rel="noopener noreferrer">SSH key-only PDF</a>
+              <a class="badge hover:text-white" href="assets/labs/Linux-Hardening-Backout-Recovery.pdf" target="_blank" rel="noopener noreferrer">Back-out recovery PDF</a>
+            </div>
+            <details class="rounded-2xl border border-slate-700 bg-slate-950/40 p-4">
+              <summary class="cursor-pointer text-white font-semibold">What this project proves</summary>
+              <ul class="mt-3 text-aj-ink-soft">
+                <li>Ability to implement least-privilege remote administration controls on Linux.</li>
+                <li>Comfort with firewall policy, SSH daemon configuration, and service validation.</li>
+                <li>Operational awareness: validate the change, document recovery, and avoid locking out administrators.</li>
+                <li>Clear written communication suitable for runbooks, playbooks, or team handoff.</li>
+              </ul>
+            </details>
+          </article>
+        </section>
+
+        <footer class="pt-10 pb-6 text-center text-[11px] text-slate-600">
+          <p>&copy; <span id="year"></span> Aaron Johnson Tech. All rights reserved.</p>
+          <p class="mt-2 text-slate-500">Recruiter-focused cybersecurity portfolio. Select consulting inquiries are welcome when aligned with security operations, hardening, documentation, or AI workflow improvement.</p>
+        </footer>
+      </div>
+    </main>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  </body>
 </html>
