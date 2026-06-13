@@ -9,12 +9,12 @@
 <text x="110" y="190" class="title">Kali Linux Admin Host</text>
 <text x="110" y="220" class="text">Role: trusted administrative workstation</text>
 <text x="110" y="248" class="text">Actions: ssh-keygen, ssh-copy-id, SSH validation</text>
-<rect x="110" y="270" width="130" height="30" rx="15" class="tag"/><text x="132" y="290" class="tagtext">192.168.0.93</text>
+<rect x="110" y="270" width="130" height="30" rx="15" class="tag"/><text x="132" y="290" class="tagtext"><ADMIN_IP></text>
 <rect x="460" y="150" width="300" height="170" rx="22" class="panel"/>
 <text x="490" y="190" class="title">Ubuntu / Wazuh Manager Host</text>
 <text x="490" y="220" class="text">Role: system being hardened</text>
 <text x="490" y="248" class="text">Controls: UFW, OpenSSH, ED25519 key auth</text>
-<rect x="490" y="270" width="140" height="30" rx="15" class="tag"/><text x="514" y="290" class="tagtext">192.168.0.250</text>
+<rect x="490" y="270" width="140" height="30" rx="15" class="tag"/><text x="514" y="290" class="tagtext"><HOST_IP></text>
 <rect x="840" y="150" width="280" height="170" rx="22" class="panel"/>
 <text x="870" y="190" class="title">Security Outcomes</text>
 <text x="870" y="220" class="text">• Default-deny inbound</text>

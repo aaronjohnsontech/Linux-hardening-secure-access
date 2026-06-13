@@ -6,7 +6,7 @@ This project implements a secure Linux remote-administration baseline using **UF
 
 The objective was not just to harden a host. It was to demonstrate a full operational workflow: identify the exposure, apply the controls, verify that legitimate administration still works, and leave behind recovery steps another analyst or administrator could follow safely.
 
-> **Recruiter takeaway:** This project demonstrates least privilege, secure remote administration, Linux hardening, change discipline, validation, and recovery planning — all directly relevant to SOC, IT Security, Endpoint Security, and Detection-focused roles.
+> **Project Value:** This project demonstrates practical Linux hardening and change-control thinking: applying least privilege, validating secure access, and documenting rollback steps so security improvements do not create unnecessary availability risk.
 
 ## Project Links
 
@@ -31,8 +31,8 @@ This project addresses that risk by moving the host to a more defensible baselin
 
 | Component | Role |
 |---|---|
-| Ubuntu / Wazuh Manager host (`192.168.0.250`) | System being hardened |
-| Kali Linux host (`192.168.0.93`) | Trusted administrative / test host |
+| Ubuntu / Wazuh Manager host (`<HOST_IP>`) | System being hardened |
+| Kali Linux host (`<ADMIN_IP>`) | Trusted administrative / test host |
 | UFW | Host firewall control |
 | OpenSSH Server | Remote administration service |
 | ED25519 SSH key | Key-based authentication |
@@ -126,6 +126,10 @@ linux-hardening-secure-access/
 - Rollback planning
 - Security documentation
 - Operational risk reduction
+
+## Sanitization Note
+
+Public artifacts use placeholders such as `<ADMIN_IP>`, `<HOST_IP>`, and `<USERNAME>` in written documentation. Screenshots have been redacted where lab-specific IP addresses appeared. The original lab used private RFC1918 addresses only.
 
 ## Safety Notice
 

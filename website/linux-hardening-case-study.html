@@ -76,8 +76,8 @@
               <h2 class="text-2xl font-semibold text-white mb-3">Lab context and design</h2>
               <p class="text-aj-ink-soft mb-4">This project hardens an Ubuntu host used for administration in a lab environment. The defensive design is simple and intentional: leave outbound traffic available, deny inbound traffic by default, allow SSH only from a trusted Kali host, then move SSH to key-only access and validate that recovery steps exist if anything breaks.</p>
               <ul class="text-aj-ink-soft text-sm space-y-2 list-disc ml-5">
-                <li><strong class="text-white">System being hardened:</strong> Ubuntu / Wazuh Manager host at <code class="text-slate-300">192.168.0.250</code></li>
-                <li><strong class="text-white">Trusted admin host:</strong> Kali Linux at <code class="text-slate-300">192.168.0.93</code></li>
+                <li><strong class="text-white">System being hardened:</strong> Ubuntu / Wazuh Manager host at <code class="text-slate-300"><HOST_IP></code></li>
+                <li><strong class="text-white">Trusted admin host:</strong> Kali Linux at <code class="text-slate-300"><ADMIN_IP></code></li>
                 <li><strong class="text-white">Core services:</strong> UFW and OpenSSH</li>
               </ul>
             </div>
@@ -157,7 +157,7 @@
               <img src="assets/linux-hardening/rollback-sequence.webp" alt="Composite image showing numbered UFW status, deletion of the SSH rule, UFW reset, UFW disable, and SSH restart steps used for rollback and recovery." />
               <figcaption>Rollback sequence: review the rule, delete it if necessary, reset or disable UFW, and restart SSH after configuration changes.</figcaption>
             </figure>
-            <div class="callout mt-4"><strong class="text-white">Recruiter takeaway:</strong> This project is not only about hardening. It also demonstrates change discipline and the ability to leave another analyst or administrator with a recovery path.</div>
+            <div class="callout mt-4"><strong class="text-white">Security Operations Value:</strong> This project is not only about hardening. It also demonstrates change discipline and the ability to leave another analyst or administrator with a recovery path.</div>
           </article>
 
           <article class="bg-aj-panel border border-slate-700 rounded-3xl p-6 sm:p-8">
@@ -170,7 +170,7 @@
               <a class="badge hover:text-white" href="assets/labs/Linux-Hardening-Backout-Recovery.pdf" target="_blank" rel="noopener noreferrer">Back-out recovery PDF</a>
             </div>
             <details class="rounded-2xl border border-slate-700 bg-slate-950/40 p-4">
-              <summary class="cursor-pointer text-white font-semibold">What this project proves</summary>
+              <summary class="cursor-pointer text-white font-semibold">What this demonstrates</summary>
               <ul class="mt-3 text-aj-ink-soft">
                 <li>Ability to implement least-privilege remote administration controls on Linux.</li>
                 <li>Comfort with firewall policy, SSH daemon configuration, and service validation.</li>

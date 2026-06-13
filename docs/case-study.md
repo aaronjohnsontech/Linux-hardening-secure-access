@@ -21,8 +21,8 @@ Remote administration often remains more open than it needs to be. A host that a
 
 ## Environment
 
-- **Target host:** Ubuntu / Wazuh Manager (`192.168.0.250`)
-- **Administrative host:** Kali Linux (`192.168.0.93`)
+- **Target host:** Ubuntu / Wazuh Manager (`<HOST_IP>`)
+- **Administrative host:** Kali Linux (`<ADMIN_IP>`)
 - **Services:** UFW, OpenSSH Server
 - **Authentication:** ED25519 key pair
 
@@ -69,9 +69,9 @@ This project demonstrates more than basic Linux commands. It shows how to apply 
 
 That matters in real teams, because a poorly executed security change can create an outage as easily as it reduces risk.
 
-## Recruiter Takeaway
+## What This Demonstrates
 
-This project proves the ability to:
+This project shows the ability to:
 
 - harden Linux administration paths
 - reduce attack surface
