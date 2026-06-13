@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Linux Hardening & Secure Access Control | Aaron Johnson</title>
+  <meta name="description" content="Linux hardening case study focused on UFW default-deny firewall rules, SSH key-only authentication, restricted access, validation, and rollback planning.">
+</head>
+<body>
+  <main>
+    <p>Security Operations · Linux Hardening · Secure Access Control</p>
+    <h1>Linux Hardening &amp; Secure Access Control</h1>
+    <p>
+      This project implemented a secure Linux remote-access baseline using UFW default-deny firewall rules,
+      SSH key-based authentication, restricted administrative access, firewall logging, validation checks,
+      and documented rollback procedures.
+    </p>
+
+    <section>
+      <h2>Problem</h2>
+      <p>
+        SSH is a common administrative entry point. When it is broadly reachable or configured for password-based login,
+        it increases exposure to brute-force attempts, credential attacks, and unauthorized access. The goal was to reduce
+        remote-access risk while preserving reliable administration and recovery options.
+      </p>
+    </section>
+
+    <section>
+      <h2>Environment</h2>
+      <ul>
+        <li>Ubuntu Linux host</li>
+        <li>Kali Linux trusted administrative/testing host</li>
+        <li>UFW host firewall</li>
+        <li>OpenSSH Server</li>
+        <li>ED25519 SSH key pair</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Implementation</h2>
+      <p>
+        I configured a default-deny inbound firewall baseline, allowed outbound traffic, restricted SSH access to a trusted
+        administrative source, enabled firewall logging, generated an ED25519 SSH key, copied the public key to the Linux host,
+        backed up the SSH daemon configuration, disabled password authentication, disabled root login, restarted SSH, and validated
+        key-based access from a second session.
+      </p>
+    </section>
+
+    <section>
+      <h2>Validation</h2>
+      <ul>
+        <li>Verified UFW was active and enforcing the expected rule set.</li>
+        <li>Confirmed SSH was allowed only from the trusted administrative source.</li>
+        <li>Validated key-based SSH access after hardening.</li>
+        <li>Documented rollback steps for UFW and SSH recovery.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Security Value</h2>
+      <p>
+        The project demonstrates least-privilege access control, secure remote administration, firewall visibility,
+        operational validation, and rollback planning. It shows the ability to harden a system while thinking about both
+        security and service continuity.
+      </p>
+    </section>
+
+    <section>
+      <h2>Recruiter Takeaway</h2>
+      <p>
+        This project shows that I can apply secure configuration controls, validate them, and document recovery steps in a way
+        that supports real security operations work.
+      </p>
+    </section>
+  </main>
+</body>
+</html>

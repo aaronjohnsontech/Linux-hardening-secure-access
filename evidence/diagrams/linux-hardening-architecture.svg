@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="620" viewBox="0 0 1100 620" role="img" aria-labelledby="title desc">
+  <title id="title">Linux Hardening Secure Access Control Architecture</title>
+  <desc id="desc">Diagram showing a trusted admin host connecting over SSH to a hardened Ubuntu server protected by UFW default deny rules and SSH key-based authentication.</desc>
+  <rect width="1100" height="620" fill="#0f172a"/>
+  <text x="550" y="55" text-anchor="middle" fill="#e5e7eb" font-family="Arial, sans-serif" font-size="30" font-weight="700">Linux Hardening &amp; Secure Access Control</text>
+  <text x="550" y="88" text-anchor="middle" fill="#94a3b8" font-family="Arial, sans-serif" font-size="16">Default-deny firewall + restricted SSH + key-only authentication + rollback planning</text>
+
+  <rect x="70" y="170" width="270" height="180" rx="18" fill="#111827" stroke="#38bdf8" stroke-width="2"/>
+  <text x="205" y="215" text-anchor="middle" fill="#e5e7eb" font-family="Arial" font-size="22" font-weight="700">Trusted Admin Host</text>
+  <text x="205" y="250" text-anchor="middle" fill="#94a3b8" font-family="Arial" font-size="15">Kali / admin workstation</text>
+  <text x="205" y="280" text-anchor="middle" fill="#94a3b8" font-family="Arial" font-size="15">ED25519 private key</text>
+  <text x="205" y="310" text-anchor="middle" fill="#94a3b8" font-family="Arial" font-size="15">Source: &lt;ADMIN_IP&gt;</text>
+
+  <rect x="415" y="145" width="270" height="230" rx="18" fill="#111827" stroke="#22c55e" stroke-width="2"/>
+  <text x="550" y="190" text-anchor="middle" fill="#e5e7eb" font-family="Arial" font-size="22" font-weight="700">UFW Firewall</text>
+  <text x="550" y="228" text-anchor="middle" fill="#94a3b8" font-family="Arial" font-size="15">Default inbound: deny</text>
+  <text x="550" y="258" text-anchor="middle" fill="#94a3b8" font-family="Arial" font-size="15">Default outbound: allow</text>
+  <text x="550" y="288" text-anchor="middle" fill="#94a3b8" font-family="Arial" font-size="15">Allow SSH only from &lt;ADMIN_IP&gt;</text>
+  <text x="550" y="318" text-anchor="middle" fill="#94a3b8" font-family="Arial" font-size="15">Logging enabled</text>
+
+  <rect x="760" y="170" width="270" height="180" rx="18" fill="#111827" stroke="#a78bfa" stroke-width="2"/>
+  <text x="895" y="215" text-anchor="middle" fill="#e5e7eb" font-family="Arial" font-size="22" font-weight="700">Ubuntu Host</text>
+  <text x="895" y="250" text-anchor="middle" fill="#94a3b8" font-family="Arial" font-size="15">OpenSSH Server</text>
+  <text x="895" y="280" text-anchor="middle" fill="#94a3b8" font-family="Arial" font-size="15">PasswordAuthentication no</text>
+  <text x="895" y="310" text-anchor="middle" fill="#94a3b8" font-family="Arial" font-size="15">PermitRootLogin no</text>
+
+  <line x1="340" y1="260" x2="415" y2="260" stroke="#38bdf8" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="685" y1="260" x2="760" y2="260" stroke="#22c55e" stroke-width="4" marker-end="url(#arrow)"/>
+  <text x="377" y="244" text-anchor="middle" fill="#e5e7eb" font-family="Arial" font-size="13">SSH/22</text>
+  <text x="722" y="244" text-anchor="middle" fill="#e5e7eb" font-family="Arial" font-size="13">Allowed</text>
+
+  <rect x="240" y="440" width="620" height="92" rx="14" fill="#111827" stroke="#f59e0b" stroke-width="2"/>
+  <text x="550" y="475" text-anchor="middle" fill="#e5e7eb" font-family="Arial" font-size="20" font-weight="700">Rollback Plan</text>
+  <text x="550" y="505" text-anchor="middle" fill="#94a3b8" font-family="Arial" font-size="15">Documented UFW rule removal, firewall reset/disable, SSH config restore, and service restart steps</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#e5e7eb" />
+    </marker>
+  </defs>
+</svg>
